@@ -14,11 +14,11 @@ public class ChooseGameUI : MonoBehaviour
 
     private void ChestGame()
     {
-        //chest game
+        SceneLoader.Instance.LoadScene(SceneLoader.Scene.ChestGameScene);
     }
 
     private void SpaceShip()
     {
-        SceneLoader.Instance.LoadScene(SceneLoader.Scene.GameScene);
+        SceneLoader.Instance.LoadScene(SceneLoader.Scene.SpaceShipGameScene);
     }
 }

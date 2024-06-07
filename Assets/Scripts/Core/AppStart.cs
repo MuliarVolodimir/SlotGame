@@ -1,7 +1,5 @@
 using UnityEngine;
 
-// this script is a simple DI container
-
 public class AppStart : MonoBehaviour
 {
     [SerializeField] Resource EconomicResoure;
@@ -11,6 +9,6 @@ public class AppStart : MonoBehaviour
         ApplicationData data = new ApplicationData();
         ApplicationData.Instance.GameResource.Add(EconomicResoure);
 
-        SceneLoader.Instance.LoadScene(SceneLoader.Scene.MenuScene);
+        SceneLoader.Instance.LoadScene(SceneLoader.Scene.MainScene);
     }
 }

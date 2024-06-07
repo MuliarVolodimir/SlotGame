@@ -25,13 +25,11 @@ public class MainGameUI : MonoBehaviour
     [SerializeField] AudioClip _aplayButtonClip;
     [SerializeField] AudioClip _cancelButtonClip;
 
-    [SerializeField] SlotSystem _slotSystem;
-
     [SerializeField] private List<GameObject> _activeScreens = new List<GameObject>();
+    private int _screenIndex;
 
     private void Start()
     {
-        Debug.Log(ApplicationData.Instance.GameResource[0].Count);
         _coinsCount.text = ApplicationData.Instance.GameResource[0].Count.ToString();
 
         _menuScreen.SetActive(true);
@@ -63,11 +61,7 @@ public class MainGameUI : MonoBehaviour
 
     private void CloseActiveVindow()
     {
-        if (_activeScreens.Count <= 0)
-        {
-            //Application.Quit();
-        }
-        else
+        if (_activeScreens.Count >= 0)
         {
             int index = _activeScreens.Count - 1;
             _activeScreens[index].SetActive(false);

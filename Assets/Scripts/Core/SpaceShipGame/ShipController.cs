@@ -7,18 +7,24 @@ public class ShipController : MonoBehaviour
     [SerializeField] Transform _bulletSpawnPos;
     [SerializeField] float _fireRate;
 
-    private float _nextFire;
-    public event Action OnDie;
+    public bool CanShoot = false;
 
-    public void Die()
+    private float _nextFire;
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        Destroy(this);
-        OnDie?.Invoke();
+        Die();
+    }
+
+    private void Die()
+    {
+        FindAnyObjectByType<SpaceShipGameController>().SpaceShipGameController_OnDie();
+        gameObject.SetActive(false);
     }
 
     public void Shoot()
     {
-        if (Time.time > _nextFire)
+        if (Time.time > _nextFire && CanShoot)
         {
             _nextFire = Time.time + _fireRate;
             GameObject bullet = Instantiate(_bullet, _bulletSpawnPos.position, _bulletSpawnPos.rotation);

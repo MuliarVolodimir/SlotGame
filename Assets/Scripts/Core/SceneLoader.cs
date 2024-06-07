@@ -19,8 +19,9 @@ public class SceneLoader
     public enum Scene
     {
         startup,
-        MenuScene,
-        GameScene       
+        MainScene,
+        SpaceShipGameScene,
+        ChestGameScene
     }
 
     public void LoadScene(Scene scene)

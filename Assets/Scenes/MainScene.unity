@@ -1361,20 +1361,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slotImage: {fileID: 2096795373}
+  _coinsText: {fileID: 1695887578}
   _buyButton: {fileID: 595794246}
   _leftButton: {fileID: 65611079}
   _rightButton: {fileID: 1075374270}
   _popupScreen: {fileID: 1634879097}
   _shopItems:
-  - Name: 1
-    Price: 10
-    Sprite: {fileID: -2413806693520163455, guid: 13c7d6327dd1c344687c806a01388371, type: 3}
-  - Name: 2
-    Price: 20
-    Sprite: {fileID: -2413806693520163455, guid: fa605de3f552b224f9fbbab63da3c2ae, type: 3}
-  - Name: 3
-    Price: 30
-    Sprite: {fileID: -2413806693520163455, guid: 2aca676748d6b9e4383768bd9ba2d722, type: 3}
+  - {fileID: 11400000, guid: d69591d3aab7b7f42849cc4ee6858d84, type: 2}
+  - {fileID: 11400000, guid: 97d9181345f75d44eadaf910f3ca46a9, type: 2}
+  - {fileID: 11400000, guid: ae037a09943555e4eb6b3d198a6f4478, type: 2}
 --- !u!1 &588080688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,7 +1662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4542285, g: 0.18013519, b: 0.57861626, a: 1}
+  m_Color: {r: 0.32031488, g: 0.1405007, b: 0.40251565, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2055,7 +2050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4542285, g: 0.18013519, b: 0.57861626, a: 1}
+  m_Color: {r: 0.5803922, g: 0.49474525, b: 0.18039216, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2091,6 +2086,7 @@ GameObject:
   - component: {fileID: 852252381}
   - component: {fileID: 852252383}
   - component: {fileID: 852252382}
+  - component: {fileID: 852252384}
   m_Layer: 5
   m_Name: GAMES_SCREEN
   m_TagString: Untagged
@@ -2157,6 +2153,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852252380}
   m_CullTransparentMesh: 1
+--- !u!114 &852252384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852252380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc5d22555a31c6499585b6ef7f015d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chestGame: {fileID: 825555395}
+  _spaceShipGame: {fileID: 632975877}
 --- !u!1 &920992947
 GameObject:
   m_ObjectHideFlags: 0
@@ -3464,7 +3474,6 @@ MonoBehaviour:
   _coinsCount: {fileID: 1695887578}
   _aplayButtonClip: {fileID: 0}
   _cancelButtonClip: {fileID: 0}
-  _slotSystem: {fileID: 0}
   _activeScreens: []
 --- !u!1 &1830830872
 GameObject:
@@ -3699,14 +3708,14 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 110492917}
   - {fileID: 1971798861}
   - {fileID: 572296523}
   - {fileID: 852252381}
   - {fileID: 588080689}
-  - {fileID: 1379560849}
-  - {fileID: 2087863214}
   - {fileID: 198131129}
+  - {fileID: 1379560849}
+  - {fileID: 110492917}
+  - {fileID: 2087863214}
   - {fileID: 1634879096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3910,15 +3919,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slotCount: 3
-  _slotSprites:
-  - {fileID: -2413806693520163455, guid: fa605de3f552b224f9fbbab63da3c2ae, type: 3}
-  - {fileID: -2413806693520163455, guid: 13c7d6327dd1c344687c806a01388371, type: 3}
-  - {fileID: -2413806693520163455, guid: 2aca676748d6b9e4383768bd9ba2d722, type: 3}
+  _spinPrice: 50
+  _reward: 200
+  _slotItems:
+  - {fileID: 11400000, guid: d69591d3aab7b7f42849cc4ee6858d84, type: 2}
+  - {fileID: 11400000, guid: 97d9181345f75d44eadaf910f3ca46a9, type: 2}
+  - {fileID: 11400000, guid: ae037a09943555e4eb6b3d198a6f4478, type: 2}
   _slotImages:
   - {fileID: 483747567}
   - {fileID: 443657001}
   - {fileID: 211334011}
-  _popup: {fileID: 1634879097}
+  _coinsText: {fileID: 1695887578}
+  _popupScreen: {fileID: 1634879097}
+  _spinDuration: 5
 --- !u!114 &1971798865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4357,7 +4370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3213217761747760069, guid: 102f37c23f8104e4d835a23e37862bc3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4378,7 +4391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1672818012727353563, guid: 58a52acf12c2b9a4da12db2610c69588, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7787998777669319617, guid: 58a52acf12c2b9a4da12db2610c69588, type: 3}
       propertyPath: m_Pivot.x

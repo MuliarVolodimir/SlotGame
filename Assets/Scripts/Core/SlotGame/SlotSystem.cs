@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SlotSystem : MonoBehaviour
 {
     [SerializeField] int _slotCount;
-    [SerializeField] List<Sprite> _slotSprites;
+    [SerializeField] int _spinPrice;
+    [SerializeField] int _reward;
+
+    [SerializeField] List<Item> _slotItems;
     [SerializeField] List<Image> _slotImages;
+    [SerializeField] TextMeshProUGUI _coinsText;
 
-    [SerializeField] PopupScreen _popup;
+    [SerializeField] PopupScreen _popupScreen;
 
-    private float _spinDuration = 0.1f; 
+    [SerializeField] float _spinDuration; 
 
     private List<int> _currentSlotValues;
     private bool _isSpinning = false;
+    
 
     private void Start()
     {
@@ -27,40 +33,56 @@ public class SlotSystem : MonoBehaviour
 
         for (int i = 0; i < _slotCount; i++)
         {
-            int randomIndex = Random.Range(0, _slotSprites.Count);
+            int randomIndex = Random.Range(0, _slotItems.Count);
             _currentSlotValues.Add(randomIndex);
-            _slotImages[i].sprite = _slotSprites[randomIndex];
+            _slotImages[i].sprite = _slotItems[randomIndex].Sprite;
         }
     }
 
     public void SpinSlots()
     {
         if (_isSpinning) return;
-
-        StartCoroutine(SpinCoroutine());
+        SpinCoroutine();
     }
 
-    private IEnumerator SpinCoroutine()
+    private void SpinCoroutine()
     {
-        _isSpinning = true;
-        float elapsedTime = 0f;
+        var coins = ApplicationData.Instance.GameResource[0].Count;
 
-        while (elapsedTime < _spinDuration)
+        if (coins >= _spinPrice)
         {
-            elapsedTime += Time.deltaTime;
+            coins -= _spinPrice;
+            ApplicationData.Instance.GameResource[0].Count = coins;
+            _coinsText.text = coins.ToString();
 
-            for (int i = 0; i < _slotCount; i++)
+            _isSpinning = true;
+            float elapsedTime = 0f;
+
+            while (elapsedTime <= _spinDuration)
             {
-                int randomIndex = Random.Range(0, _slotSprites.Count);
-                _currentSlotValues[i] = randomIndex;
-                _slotImages[i].sprite = _slotSprites[randomIndex];
+                if (Time.time > elapsedTime)
+                {
+                    elapsedTime = Time.time + 0.1f;
+
+                    for (int i = 0; i < _slotCount; i++)
+                    {
+                        int randomIndex = Random.Range(0, _slotItems.Count);
+                        _currentSlotValues[i] = randomIndex;
+                        _slotImages[i].sprite = _slotItems[randomIndex].Sprite;
+                    }
+                }
+
+                Debug.Log(Time.time + " - " + elapsedTime + " - " + _spinDuration);
             }
 
-            yield return new WaitForSeconds(0.1f);
+            _isSpinning = false;
+            CheckWinCondition();
         }
-
-        _isSpinning = false;
-        CheckWinCondition();
+        else
+        {
+            _popupScreen.ShowMessage("NOT ENOUGHT COINS!");
+        }
+        
     }
 
     private void CheckWinCondition()
@@ -78,13 +100,16 @@ public class SlotSystem : MonoBehaviour
 
         if (isWin)
         {
-            _popup.ShowMessage("WIN!");
+            _popupScreen.ShowMessage($"WIN!\n {_reward}");
+            ApplicationData.Instance.GameResource[0].Count += _reward;
+            var coins = ApplicationData.Instance.GameResource[0].Count;
+            _coinsText.text = coins.ToString();
             Debug.Log("WIN!!!");
             return;
         }
         else
         {
-            _popup.ShowMessage("LOSE!");
+            _popupScreen.ShowMessage("TRY AGAIN!");
             Debug.Log("LOSE!!!!");
             return;
         }

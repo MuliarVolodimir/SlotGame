@@ -6,49 +6,63 @@ using UnityEngine.UI;
 public class ShopUI : MonoBehaviour
 {
     [SerializeField] Image _slotImage;
+    [SerializeField] TextMeshProUGUI _coinsText;
 
     [SerializeField] Button _buyButton;
     [SerializeField] Button _leftButton;
     [SerializeField] Button _rightButton;
 
     [SerializeField] PopupScreen _popupScreen;
-    [SerializeField] List<ShopItem> _shopItems;
+    [SerializeField] List<Item> _shopItems;
 
-    private int _itemsCount;
-    private ShopItem _curResource;
+    private int _itemIndex;
+    private Item _curResource;
 
     private void Start()
     {
-        _itemsCount = _shopItems.Count;
+        _itemIndex = _shopItems.Count - 1;
+
         _buyButton.onClick.AddListener(() => { Buy(); });
         _leftButton.onClick.AddListener(() => { MoveLeft(); });
         _rightButton.onClick.AddListener(() => { MoveRight(); });
+
+        UpdateGraphics();
     }
 
     private void Buy()
     {
         var coins = ApplicationData.Instance.GameResource[0].Count;
-        coins -= _curResource.Price;
-        ApplicationData.Instance.GameResource[0].Count = coins;
+        if (coins >= _curResource.Price)
+        {
+            coins -= _curResource.Price;
+            ApplicationData.Instance.GameResource[0].Count = coins;
+            _coinsText.text = coins.ToString();
+        }
+        else
+        {
+            _popupScreen.ShowMessage("NOT ENOUGHT COINS!");
+        }
     }
     
     private void MoveLeft()
     {
-        _itemsCount--;
-        if (_itemsCount <= _shopItems.Count) _itemsCount = _shopItems.Count - 1;
+        _itemIndex--;
+        if (_itemIndex < 0) _itemIndex = _shopItems.Count - 1;
         UpdateGraphics();
     }
 
     private void MoveRight()
     {
-        _itemsCount++;
-        if (_itemsCount >= _shopItems.Count) _itemsCount = 0; 
+        _itemIndex++;
+        if (_itemIndex >= _shopItems.Count) _itemIndex = 0; 
         UpdateGraphics();
     }
 
     private void UpdateGraphics()
     {
-        _slotImage.sprite = _shopItems[_itemsCount].Sprite;
-        _buyButton.GetComponentInChildren<TextMeshProUGUI>().text = _shopItems[_itemsCount].Price.ToString();
+        _curResource = _shopItems[_itemIndex];
+
+        _slotImage.sprite = _shopItems[_itemIndex].Sprite;
+        _buyButton.GetComponentInChildren<TextMeshProUGUI>().text = _shopItems[_itemIndex].Price.ToString();
     }
 }

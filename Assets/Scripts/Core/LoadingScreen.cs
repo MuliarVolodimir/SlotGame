@@ -8,6 +8,7 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField] Image _loadImage;
     [SerializeField] float _loadDuration;
 
+    public event Action OnLoad;
     private void Start()
     {
         StartCoroutine(Load());
@@ -24,6 +25,7 @@ public class LoadingScreen : MonoBehaviour
             yield return null; 
         }
 
+        OnLoad?.Invoke();
         this.gameObject.SetActive(false); 
     }
 }

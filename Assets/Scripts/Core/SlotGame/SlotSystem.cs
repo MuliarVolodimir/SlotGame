@@ -8,17 +8,20 @@ public class SlotSystem : MonoBehaviour
     [SerializeField] int _slotCount;
     [SerializeField] List<Sprite> _slotSprites;
     [SerializeField] List<Image> _slotImages;
+
+    [SerializeField] PopupScreen _popup;
+
     private float _spinDuration = 0.1f; 
 
     private List<int> _currentSlotValues;
     private bool _isSpinning = false;
 
-    void Start()
+    private void Start()
     {
         InitializeSlots();
     }
 
-    void InitializeSlots()
+    private void InitializeSlots()
     {
         _currentSlotValues = new List<int>();
 
@@ -60,7 +63,7 @@ public class SlotSystem : MonoBehaviour
         CheckWinCondition();
     }
 
-    void CheckWinCondition()
+    private void CheckWinCondition()
     {
         bool isWin = true;
 
@@ -75,11 +78,15 @@ public class SlotSystem : MonoBehaviour
 
         if (isWin)
         {
-            Debug.Log("win");
+            _popup.ShowMessage("WIN!");
+            Debug.Log("WIN!!!");
+            return;
         }
         else
         {
-            Debug.Log("Lose");
+            _popup.ShowMessage("LOSE!");
+            Debug.Log("LOSE!!!!");
+            return;
         }
     }
 }

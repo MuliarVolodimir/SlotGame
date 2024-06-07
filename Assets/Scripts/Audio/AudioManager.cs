@@ -6,6 +6,8 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager Instance;
 
+    private AudioSource _audioSource;
+
     private void Start()
     {
         if (_instance == null)
@@ -19,18 +21,32 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySound(AudioClip clip, bool isLoop)
+    public void PlayOnceSound(AudioClip clip)
     {
         if (clip != null)
         {
             AudioSource audioSource = new AudioSource();
 
             audioSource.clip = clip;
-            audioSource.loop = isLoop;
+            audioSource.loop = false;
             audioSource.Play();
 
-            DontDestroyOnLoad(audioSource);
             Destroy(audioSource, audioSource.clip.length);
+            DontDestroyOnLoad(audioSource);
+        }
+    }
+    
+    public void PlayAmbientSound(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            _audioSource = new AudioSource();
+
+            _audioSource.clip = clip;
+            _audioSource.loop = true;
+            _audioSource.Play();
+
+            DontDestroyOnLoad(_audioSource);
         }
     }
 }

@@ -20,7 +20,7 @@ public class SceneLoader
     {
         startup,
         MenuScene,
-        GameScene
+        GameScene       
     }
 
     public void LoadScene(Scene scene)

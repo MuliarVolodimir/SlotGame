@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 1823969102}
   - component: {fileID: 1823969101}
   m_Layer: 0
-  m_Name: ApplicationController
+  m_Name: AppStarter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -8,9 +8,9 @@ public class AppStart : MonoBehaviour
 
     private void Start()
     {
+        ApplicationData data = new ApplicationData();
         ApplicationData.Instance.GameResource.Add(EconomicResoure);
 
-        DontDestroyOnLoad(this);
         SceneLoader.Instance.LoadScene(SceneLoader.Scene.MenuScene);
     }
 }

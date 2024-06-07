@@ -15,12 +15,13 @@ public class SlotSystem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _coinsText;
 
     [SerializeField] PopupScreen _popupScreen;
+    [SerializeField] AudioClip _notMoneyClip;
+    [SerializeField] AudioClip _spinClip;
+    [SerializeField] AudioClip _winClip;
 
-    [SerializeField] float _spinDuration; 
-
+    private float _spinDuration;
     private List<int> _currentSlotValues;
     private bool _isSpinning = false;
-    
 
     private void Start()
     {
@@ -42,13 +43,13 @@ public class SlotSystem : MonoBehaviour
     public void SpinSlots()
     {
         if (_isSpinning) return;
-        SpinCoroutine();
+        StartCoroutine(SpinCoroutine());
     }
 
-    private void SpinCoroutine()
+    private IEnumerator SpinCoroutine()
     {
         var coins = ApplicationData.Instance.GameResource[0].Count;
-
+        _spinDuration = _spinClip.length;
         if (coins >= _spinPrice)
         {
             coins -= _spinPrice;
@@ -57,22 +58,21 @@ public class SlotSystem : MonoBehaviour
 
             _isSpinning = true;
             float elapsedTime = 0f;
+            float interval = 0.1f;
 
-            while (elapsedTime <= _spinDuration)
+            AudioManager.Instance.PlayOneShotSound(_spinClip);
+
+            while (elapsedTime < _spinDuration)
             {
-                if (Time.time > elapsedTime)
+                for (int i = 0; i < _slotCount; i++)
                 {
-                    elapsedTime = Time.time + 0.1f;
-
-                    for (int i = 0; i < _slotCount; i++)
-                    {
-                        int randomIndex = Random.Range(0, _slotItems.Count);
-                        _currentSlotValues[i] = randomIndex;
-                        _slotImages[i].sprite = _slotItems[randomIndex].Sprite;
-                    }
+                    int randomIndex = Random.Range(0, _slotItems.Count);
+                    _currentSlotValues[i] = randomIndex;
+                    _slotImages[i].sprite = _slotItems[randomIndex].Sprite;
                 }
 
-                Debug.Log(Time.time + " - " + elapsedTime + " - " + _spinDuration);
+                elapsedTime += interval;
+                yield return new WaitForSeconds(interval);
             }
 
             _isSpinning = false;
@@ -80,9 +80,9 @@ public class SlotSystem : MonoBehaviour
         }
         else
         {
-            _popupScreen.ShowMessage("NOT ENOUGHT COINS!");
+            AudioManager.Instance.PlayOneShotSound(_notMoneyClip);
+            _popupScreen.ShowMessage("NOT ENOUGH COINS!");
         }
-        
     }
 
     private void CheckWinCondition()
@@ -100,18 +100,18 @@ public class SlotSystem : MonoBehaviour
 
         if (isWin)
         {
+            AudioManager.Instance.PlayOneShotSound(_winClip);
+
             _popupScreen.ShowMessage($"WIN!\n {_reward}");
             ApplicationData.Instance.GameResource[0].Count += _reward;
             var coins = ApplicationData.Instance.GameResource[0].Count;
             _coinsText.text = coins.ToString();
             Debug.Log("WIN!!!");
-            return;
         }
         else
         {
             _popupScreen.ShowMessage("TRY AGAIN!");
             Debug.Log("LOSE!!!!");
-            return;
         }
     }
 }

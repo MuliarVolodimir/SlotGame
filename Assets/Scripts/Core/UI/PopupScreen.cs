@@ -7,6 +7,7 @@ public class PopupScreen : MonoBehaviour
 {
     [SerializeField] Button _confirmButton;
     [SerializeField] TextMeshProUGUI _messageText;
+    [SerializeField] AudioClip _aplayClip;
 
     public event Action OnConfirm;
 
@@ -18,6 +19,7 @@ public class PopupScreen : MonoBehaviour
 
     private void Close()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         OnConfirm?.Invoke();
         gameObject.SetActive(false);
     }

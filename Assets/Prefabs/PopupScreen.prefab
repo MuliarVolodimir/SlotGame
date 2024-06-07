@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3213217761747760069}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -91,6 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _confirmButton: {fileID: 6839080496795551320}
   _messageText: {fileID: 81875323907964075}
+  _aplayClip: {fileID: 8300000, guid: 214ec73efeca82e43b00611bed856871, type: 3}
 --- !u!1 &5971026627538691684
 GameObject:
   m_ObjectHideFlags: 0

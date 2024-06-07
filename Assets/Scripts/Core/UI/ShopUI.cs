@@ -15,8 +15,12 @@ public class ShopUI : MonoBehaviour
     [SerializeField] PopupScreen _popupScreen;
     [SerializeField] List<Item> _shopItems;
 
+    [SerializeField] AudioClip _aplayClip;
+    [SerializeField] AudioClip _notMoneyClip;
+
     private int _itemIndex;
     private Item _curResource;
+    
 
     private void Start()
     {
@@ -31,6 +35,8 @@ public class ShopUI : MonoBehaviour
 
     private void Buy()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
+
         var coins = ApplicationData.Instance.GameResource[0].Count;
         if (coins >= _curResource.Price)
         {
@@ -40,12 +46,14 @@ public class ShopUI : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlayOneShotSound(_notMoneyClip);
             _popupScreen.ShowMessage("NOT ENOUGHT COINS!");
         }
     }
     
     private void MoveLeft()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         _itemIndex--;
         if (_itemIndex < 0) _itemIndex = _shopItems.Count - 1;
         UpdateGraphics();
@@ -53,6 +61,7 @@ public class ShopUI : MonoBehaviour
 
     private void MoveRight()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         _itemIndex++;
         if (_itemIndex >= _shopItems.Count) _itemIndex = 0; 
         UpdateGraphics();

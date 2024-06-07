@@ -3,13 +3,17 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    [SerializeField] float _fireRate;
     [SerializeField] GameObject _bullet;
     [SerializeField] Transform _bulletSpawnPos;
-    [SerializeField] float _fireRate;
+
+    [SerializeField] AudioClip _shipShootClip;
+    [SerializeField] AudioClip _explosionClip;
 
     public bool CanShoot = false;
 
     private float _nextFire;
+    
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -18,6 +22,7 @@ public class ShipController : MonoBehaviour
 
     private void Die()
     {
+        AudioManager.Instance.PlayOneShotSound(_explosionClip);
         FindAnyObjectByType<SpaceShipGameController>().SpaceShipGameController_OnDie();
         gameObject.SetActive(false);
     }
@@ -26,6 +31,7 @@ public class ShipController : MonoBehaviour
     {
         if (Time.time > _nextFire && CanShoot)
         {
+            AudioManager.Instance.PlayOneShotSound(_shipShootClip);
             _nextFire = Time.time + _fireRate;
             GameObject bullet = Instantiate(_bullet, _bulletSpawnPos.position, _bulletSpawnPos.rotation);
             bullet.SetActive(true);

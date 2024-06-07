@@ -18,6 +18,10 @@ public class ApplicationData
     }
 
     public List<Resource> GameResource = new List<Resource>();
+    public bool FirstStart = true;
+
+    public float GameVolume = 1f;
+    public bool GameIsMute = false;
 }
 
 [Serializable]

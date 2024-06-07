@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class MainGameUI : MonoBehaviour
 {
-    [Header("UI")]
     [SerializeField] Button _startButton;
     [SerializeField] Button _shopButton;
     [SerializeField] Button _chooseGameButton;
@@ -21,23 +20,29 @@ public class MainGameUI : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _coinsCount;
 
-    [Header("Audio")]
     [SerializeField] AudioClip _aplayButtonClip;
     [SerializeField] AudioClip _cancelButtonClip;
+    [SerializeField] AudioClip _backGroundClip;
 
     [SerializeField] private List<GameObject> _activeScreens = new List<GameObject>();
     private int _screenIndex;
 
     private void Start()
     {
-        _coinsCount.text = ApplicationData.Instance.GameResource[0].Count.ToString();
-
-        _menuScreen.SetActive(true);
-
         _mainScreen.SetActive(false);
         _settingsScreen.SetActive(false);
         _chooseGameScreen.SetActive(false);
         _shopScreen.SetActive(false);
+
+        if (ApplicationData.Instance.FirstStart)
+        {
+            _menuScreen.SetActive(true);
+        }
+        else
+        {
+            _menuScreen.SetActive(false);
+            _mainScreen.SetActive(true);
+        }
 
         _startButton.onClick.AddListener(() => { Play(); });
         _shopButton.onClick.AddListener(() => { Shop(); });
@@ -45,23 +50,32 @@ public class MainGameUI : MonoBehaviour
         _settingsButton.onClick.AddListener(() => { Settings(); });
 
         _backBatton.onClick.AddListener(() => { CloseActiveVindow(); });
-    }
 
+        _coinsCount.text = ApplicationData.Instance.GameResource[0].Count.ToString();
+
+    }
+    
     private void Shop()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
         SwitchActive(_shopScreen);
-        _activeScreens.Add(_shopScreen);
+        _activeScreens.Add(_shopScreen); 
     }
 
-    private void Play()
+    private void Play()       
     {
+        ApplicationData.Instance.FirstStart = false;
+        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
+        AudioManager.Instance.SetBackGroundMusic(_backGroundClip);
         SwitchActive(_menuScreen);
         SwitchActive(_mainScreen);
     }
 
     private void CloseActiveVindow()
     {
-        if (_activeScreens.Count >= 0)
+        AudioManager.Instance.PlayOneShotSound(_cancelButtonClip);
+
+        if (_activeScreens.Count > 0)
         {
             int index = _activeScreens.Count - 1;
             _activeScreens[index].SetActive(false);
@@ -71,12 +85,14 @@ public class MainGameUI : MonoBehaviour
 
     private void Settings()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
         SwitchActive(_settingsScreen);
-        _activeScreens.Add(_settingsScreen);
+        _activeScreens.Add(_settingsScreen); 
     }
 
     private void ChooseGameButton()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
         SwitchActive(_chooseGameScreen);
         _activeScreens.Add(_chooseGameScreen);
     }

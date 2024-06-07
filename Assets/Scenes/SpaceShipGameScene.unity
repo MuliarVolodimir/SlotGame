@@ -454,6 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29565b25cce173c4d879a5a4dbd2f6b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explosionClip: {fileID: 8300000, guid: e4ebd2fbaea4e0e46bc28a9d4b15d0ea, type: 3}
 --- !u!114 &327228816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,6 +830,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5785867866392998688, guid: 58a52acf12c2b9a4da12db2610c69588, type: 3}
+      propertyPath: _loadDuration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7787998777669319617, guid: 58a52acf12c2b9a4da12db2610c69588, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1122,6 +1127,7 @@ MonoBehaviour:
   _enemySpawnPos:
   - {fileID: 771676288}
   - {fileID: 1570022185}
+  _aplayClip: {fileID: 0}
 --- !u!1 &1067718200
 GameObject:
   m_ObjectHideFlags: 0
@@ -1603,6 +1609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29565b25cce173c4d879a5a4dbd2f6b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explosionClip: {fileID: 0}
 --- !u!50 &1333403276
 Rigidbody2D:
   serializedVersion: 4
@@ -2537,6 +2544,7 @@ MonoBehaviour:
   _homeButton: {fileID: 1830250290}
   _restartButton: {fileID: 2034562451}
   _rewardText: {fileID: 1928711091}
+  _aplayClip: {fileID: 8300000, guid: 214ec73efeca82e43b00611bed856871, type: 3}
 --- !u!1 &2034562449
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,10 +2745,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3252810014476420882}
   - component: {fileID: 3066540726587426515}
-  - component: {fileID: 4440670813957152491}
   - component: {fileID: 4440670813957152492}
-  - component: {fileID: 4440670813957152493}
   - component: {fileID: 4440670813957152494}
+  - component: {fileID: 4440670813957152493}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Player
@@ -2748,18 +2755,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4440670813957152491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4440670813957152490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29565b25cce173c4d879a5a4dbd2f6b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &4440670813957152492
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2817,9 +2812,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 293f4098e4f4f4f4a8d7648fe5bc4e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fireRate: 0.15
   _bullet: {fileID: 1333403270}
   _bulletSpawnPos: {fileID: 1562946842}
-  _fireRate: 0.15
+  _shipShootClip: {fileID: 8300000, guid: d01cd2a81be51784693200fad81f7a2e, type: 3}
+  _explosionClip: {fileID: 8300000, guid: e4ebd2fbaea4e0e46bc28a9d4b15d0ea, type: 3}
   CanShoot: 0
 --- !u!50 &4440670813957152494
 Rigidbody2D:

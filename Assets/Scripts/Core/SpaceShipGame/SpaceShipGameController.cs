@@ -20,8 +20,11 @@ public class SpaceShipGameController : MonoBehaviour
 
     [Header("Enemy")]
     [SerializeField] float _spawnRate;
-    [SerializeField] GameObject _enemyPrefab;
+    [SerializeField] List<GameObject> _enemyPrefabs;
     [SerializeField] List<Transform> _enemySpawnPos;
+
+    [Header("Audio")]
+    [SerializeField] AudioClip _aplayClip;
 
     private ShipController _shipController;
     private int _score;
@@ -68,12 +71,14 @@ public class SpaceShipGameController : MonoBehaviour
 
     public void MoveLeft()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         _shipPrefab.transform.position = _leftShipPosition.position;
         _shipPrefab.GetComponent<ShipController>().Shoot();
     }
 
     public void MoveRight()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         _shipPrefab.transform.position = _rightShipPosition.position;
         _shipPrefab.GetComponent<ShipController>().Shoot();
     }
@@ -84,8 +89,10 @@ public class SpaceShipGameController : MonoBehaviour
         {
             _nextSpawn = Time.time + _spawnRate;
 
-            var index = Random.Range(0, _enemySpawnPos.Count);
-            GameObject enemy = Instantiate(_enemyPrefab, _enemySpawnPos[index].position, _enemySpawnPos[index].rotation);
+            var posIndex = Random.Range(0, _enemySpawnPos.Count);
+            var enemyIndex = Random.Range(0, _enemyPrefabs.Count);
+
+            GameObject enemy = Instantiate(_enemyPrefabs[enemyIndex], _enemySpawnPos[posIndex].position, _enemySpawnPos[posIndex].rotation);
             enemy.SetActive(true);
         }
     }

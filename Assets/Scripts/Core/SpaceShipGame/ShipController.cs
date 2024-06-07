@@ -23,7 +23,7 @@ public class ShipController : MonoBehaviour
     private void Die()
     {
         AudioManager.Instance.PlayOneShotSound(_explosionClip);
-        FindAnyObjectByType<SpaceShipGameController>().SpaceShipGameController_OnDie();
+        FindObjectOfType<SpaceShipGameController>().SpaceShipGameController_OnDie();
         gameObject.SetActive(false);
     }
 

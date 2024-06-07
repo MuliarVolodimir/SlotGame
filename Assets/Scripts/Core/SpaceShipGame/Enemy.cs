@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        var controller = FindAnyObjectByType<SpaceShipGameController>();
+        var controller = FindObjectOfType<SpaceShipGameController>();
         if (controller != null)
         {
             controller.UpdateScore(_reward);

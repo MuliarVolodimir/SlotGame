@@ -1123,7 +1123,8 @@ MonoBehaviour:
   _rightShipPosition: {fileID: 1865680348}
   _leftShipPosition: {fileID: 182343538}
   _spawnRate: 0.8
-  _enemyPrefab: {fileID: 327228814}
+  _enemyPrefabs:
+  - {fileID: 327228814}
   _enemySpawnPos:
   - {fileID: 771676288}
   - {fileID: 1570022185}

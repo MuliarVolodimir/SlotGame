@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eaed9461e1bb0f42ba8c45d80eedf4d, type: 3}
-  m_Name: B
+  m_Name: BlueCristal
   m_EditorClassIdentifier: 
-  Name: B
-  Price: 20
-  Sprite: {fileID: -2413806693520163455, guid: fa605de3f552b224f9fbbab63da3c2ae, type: 3}
+  Name: BlueCristal
+  Price: 80
+  Sprite: {fileID: 2059587745, guid: abfd594666710434e99faf76cea9b44f, type: 3}

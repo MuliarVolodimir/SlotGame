@@ -12,7 +12,11 @@ public class ChestSystem : MonoBehaviour
     [SerializeField] Sprite _chestSprite;
     [SerializeField] List<Item> _possibleItems;
 
-    [SerializeField] PopupScreen _popupScreen;
+    [SerializeField] GameObject _popupScreen;
+
+    [SerializeField] TextMeshProUGUI _findText;
+    [SerializeField] TextMeshProUGUI _priceText;
+    [SerializeField] Image _itemImage;
 
     [SerializeField] TextMeshProUGUI _tapCounterText;
     [SerializeField] TextMeshProUGUI _coinsText;
@@ -21,6 +25,7 @@ public class ChestSystem : MonoBehaviour
     [SerializeField] AudioClip _openChestClip;
     
     private int _currentTaps;
+    
 
     private void Start()
     {
@@ -58,20 +63,24 @@ public class ChestSystem : MonoBehaviour
 
         var isFind = false;
         isFind = Random.Range(0, 2) == 1 ? true : false;
-
+        
+        _popupScreen.SetActive(true);
         if (isFind)
         {
             var item = _possibleItems[Random.Range(0, _possibleItems.Count)];
             ApplicationData.Instance.GameResource[0].Count += item.Price;
 
-            
-            _popupScreen.ShowMessage($"FIND ITEM: {item.Name} \n +{item.Price}");
-            _popupScreen.OnConfirm += SpawnChest;
+            _findText.text = $"FIND ITEM";
+            _priceText.text = $"+{item.Price}";
+            _itemImage.sprite = item.Sprite;
+            _popupScreen.GetComponent<PopupScreen>().OnConfirm += SpawnChest;
         }
         else
         {
-            _popupScreen.ShowMessage($"EMPTY");
-            _popupScreen.OnConfirm += SpawnChest;
+            _findText.text = $"EMPTY";
+            _priceText.text = $" ";
+            _itemImage.sprite = null;
+            _popupScreen.GetComponent<PopupScreen>().OnConfirm += SpawnChest;
         }
     }
 
@@ -80,7 +89,7 @@ public class ChestSystem : MonoBehaviour
         _coinsText.text = ApplicationData.Instance.GameResource[0].Count.ToString();
         _currentTaps = 0;
         _chestSlot.sprite = _chestSprite;
-        _popupScreen.OnConfirm -= SpawnChest;  
+        _popupScreen.GetComponent<PopupScreen>().OnConfirm -= SpawnChest;  
         
     }
 }

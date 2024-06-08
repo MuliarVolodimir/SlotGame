@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eaed9461e1bb0f42ba8c45d80eedf4d, type: 3}
-  m_Name: A
+  m_Name: Coin
   m_EditorClassIdentifier: 
-  Name: A
-  Price: 10
-  Sprite: {fileID: -2413806693520163455, guid: 13c7d6327dd1c344687c806a01388371, type: 3}
+  Name: Coin
+  Price: 120
+  Sprite: {fileID: -1821045169, guid: abfd594666710434e99faf76cea9b44f, type: 3}

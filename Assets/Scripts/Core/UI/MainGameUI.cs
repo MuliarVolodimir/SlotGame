@@ -10,7 +10,7 @@ public class MainGameUI : MonoBehaviour
     [SerializeField] Button _chooseGameButton;
     [SerializeField] Button _settingsButton;
 
-    [SerializeField] Button _backBatton;
+    [SerializeField] Button _backButton;
 
     [SerializeField] GameObject _menuScreen;
     [SerializeField] GameObject _mainScreen;
@@ -20,88 +20,101 @@ public class MainGameUI : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _coinsCount;
 
-    [SerializeField] AudioClip _aplayButtonClip;
+    [SerializeField] AudioClip _playButtonClip;
     [SerializeField] AudioClip _cancelButtonClip;
-    [SerializeField] AudioClip _backGroundClip;
+    [SerializeField] AudioClip _backgroundClip;
 
-    [SerializeField] private List<GameObject> _activeScreens = new List<GameObject>();
-    private int _screenIndex;
+    private List<GameObject> _activeScreens;
+    private int _screenIndex = -1;
 
     private void Start()
     {
-        _mainScreen.SetActive(false);
-        _settingsScreen.SetActive(false);
-        _chooseGameScreen.SetActive(false);
-        _shopScreen.SetActive(false);
+        _activeScreens = new List<GameObject> { _menuScreen, _mainScreen, _shopScreen, _chooseGameScreen, _settingsScreen };
+
+        foreach (var screen in _activeScreens)
+        {
+            screen.SetActive(false);
+        }
+
+       
 
         if (ApplicationData.Instance.FirstStart)
         {
             _menuScreen.SetActive(true);
+            _coinsCount.gameObject.SetActive(false);
+            _backButton.gameObject.SetActive(false);
+            _screenIndex = _activeScreens.IndexOf(_menuScreen);
         }
         else
         {
-            _menuScreen.SetActive(false);
             _mainScreen.SetActive(true);
+            _coinsCount.gameObject.SetActive(true);
+            _backButton.gameObject.SetActive(true);
+            _screenIndex = _activeScreens.IndexOf(_mainScreen);
         }
 
-        _startButton.onClick.AddListener(() => { Play(); });
-        _shopButton.onClick.AddListener(() => { Shop(); });
-        _chooseGameButton.onClick.AddListener(() => { ChooseGameButton(); });
-        _settingsButton.onClick.AddListener(() => { Settings(); });
-
-        _backBatton.onClick.AddListener(() => { CloseActiveVindow(); });
+        _startButton.onClick.AddListener(Play);
+        _shopButton.onClick.AddListener(Shop);
+        _chooseGameButton.onClick.AddListener(ChooseGame);
+        _settingsButton.onClick.AddListener(ToggleSettings);
+        _backButton.onClick.AddListener(CloseActiveWindow);
 
         _coinsCount.text = ApplicationData.Instance.GameResource[0].Count.ToString();
-
     }
-    
+
     private void Shop()
     {
-        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
+        AudioManager.Instance.PlayOneShotSound(_playButtonClip);
         SwitchActive(_shopScreen);
-        _activeScreens.Add(_shopScreen); 
     }
 
-    private void Play()       
+    private void Play()
     {
         ApplicationData.Instance.FirstStart = false;
-        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
-        AudioManager.Instance.SetBackGroundMusic(_backGroundClip);
-        SwitchActive(_menuScreen);
+        _coinsCount.gameObject.SetActive(true);
+        _backButton.gameObject.SetActive(true);
+
+        AudioManager.Instance.PlayOneShotSound(_playButtonClip);
+        AudioManager.Instance.SetBackGroundMusic(_backgroundClip);
         SwitchActive(_mainScreen);
     }
 
-    private void CloseActiveVindow()
+    private void CloseActiveWindow()
     {
         AudioManager.Instance.PlayOneShotSound(_cancelButtonClip);
 
-        if (_activeScreens.Count > 0)
+        if (_activeScreens[_screenIndex] != _mainScreen)
         {
-            int index = _activeScreens.Count - 1;
-            _activeScreens[index].SetActive(false);
-            _activeScreens.Remove(_activeScreens[index]);
+            _activeScreens[_screenIndex].SetActive(false);
+            _mainScreen.SetActive(true);
+            _screenIndex = _activeScreens.IndexOf(_mainScreen);
         }
     }
 
-    private void Settings()
+    private void ToggleSettings()
     {
-        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
-        SwitchActive(_settingsScreen);
-        _activeScreens.Add(_settingsScreen); 
+        AudioManager.Instance.PlayOneShotSound(_playButtonClip);
+
+        _settingsScreen.SetActive(!_settingsScreen.activeSelf);
     }
 
-    private void ChooseGameButton()
+    private void ChooseGame()
     {
-        AudioManager.Instance.PlayOneShotSound(_aplayButtonClip);
+        AudioManager.Instance.PlayOneShotSound(_playButtonClip);
         SwitchActive(_chooseGameScreen);
-        _activeScreens.Add(_chooseGameScreen);
     }
 
     private void SwitchActive(GameObject screen)
     {
         if (screen != null)
         {
-            screen.SetActive(!screen.activeSelf);
+            foreach (var activeScreen in _activeScreens)
+            {
+                activeScreen.SetActive(false);
+            }
+
+            screen.SetActive(true);
+            _screenIndex = _activeScreens.IndexOf(screen);
         }
     }
 }

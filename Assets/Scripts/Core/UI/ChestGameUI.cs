@@ -9,7 +9,6 @@ public class ChestGameUI : MonoBehaviour
 
     [SerializeField] AudioClip _aplayButtonClip;
     [SerializeField] AudioClip _backClip;
-    [SerializeField] AudioClip _chestTapClip;
 
     private void Start()
     {

@@ -20,6 +20,8 @@ public class SlotSystem : MonoBehaviour
     [SerializeField] AudioClip _spinClip;
     [SerializeField] AudioClip _winClip;
     [SerializeField] AudioClip _loseClip;
+    [SerializeField] Transform _particlePos;
+    [SerializeField] GameObject _winParticle;
 
     private float _spinDuration;
     private List<int> _currentSlotValues;
@@ -109,7 +111,8 @@ public class SlotSystem : MonoBehaviour
         if (isWin)
         {
             AudioManager.Instance.PlayOneShotSound(_winClip);
-            
+            GameObject particle = Instantiate(_winParticle, _particlePos);
+            Destroy(particle, _winClip.length);
             _rewardText.text = $"WIN!!!";
             yield return new WaitForSeconds(_winClip.length);
 

@@ -18,7 +18,7 @@ public class MainGameUI : MonoBehaviour
     [SerializeField] GameObject _chooseGameScreen;
     [SerializeField] GameObject _settingsScreen;
 
-    [SerializeField] TextMeshProUGUI _coinsCount;
+    [SerializeField] GameObject _coinsCount;
 
     [SerializeField] AudioClip _playButtonClip;
     [SerializeField] AudioClip _cancelButtonClip;
@@ -29,6 +29,7 @@ public class MainGameUI : MonoBehaviour
 
     private void Start()
     {
+
         _activeScreens = new List<GameObject> { _menuScreen, _mainScreen, _shopScreen, _chooseGameScreen, _settingsScreen };
 
         foreach (var screen in _activeScreens)
@@ -36,9 +37,7 @@ public class MainGameUI : MonoBehaviour
             screen.SetActive(false);
         }
 
-       
-
-        if (ApplicationData.Instance.FirstStart)
+        if (ApplicationData.Instance.MainFirstStart)
         {
             _menuScreen.SetActive(true);
             _coinsCount.gameObject.SetActive(false);
@@ -59,7 +58,9 @@ public class MainGameUI : MonoBehaviour
         _settingsButton.onClick.AddListener(ToggleSettings);
         _backButton.onClick.AddListener(CloseActiveWindow);
 
-        _coinsCount.text = ApplicationData.Instance.GameResource[0].Count.ToString();
+        _coinsCount.GetComponentInChildren<TextMeshProUGUI>().text = ApplicationData.Instance.GameResource[0].Count.ToString();
+
+        
     }
 
     private void Shop()
@@ -70,7 +71,7 @@ public class MainGameUI : MonoBehaviour
 
     private void Play()
     {
-        ApplicationData.Instance.FirstStart = false;
+        ApplicationData.Instance.MainFirstStart = false;
         _coinsCount.gameObject.SetActive(true);
         _backButton.gameObject.SetActive(true);
 

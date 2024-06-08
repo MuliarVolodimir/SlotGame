@@ -15,6 +15,7 @@ public class ChestSystem : MonoBehaviour
     [SerializeField] List<Item> _possibleItems;
 
     [SerializeField] GameObject _breakParticle;
+    [SerializeField] Transform _particleSpawnPos;
     [SerializeField] GameObject _popupScreen;
 
     [SerializeField] TextMeshProUGUI _findText;
@@ -35,6 +36,13 @@ public class ChestSystem : MonoBehaviour
     {
         _coinsText.text = ApplicationData.Instance.GameResource[0].Count.ToString();
         _tapButton.onClick.AddListener(() => { TapChest(); });
+        FindObjectOfType<TutorialSystem>().OnConfirm += ChestSystem_OnConfirm;
+        
+    }
+
+    private void ChestSystem_OnConfirm()
+    {
+        ApplicationData.Instance.ChestFirstStart = false;
         UpdateTapCounterText();
         SpawnChest();
     }
@@ -72,7 +80,7 @@ public class ChestSystem : MonoBehaviour
     {
         AudioManager.Instance.PlayOneShotSound(_openChestClip);
 
-        GameObject particle = Instantiate(_breakParticle, transform.position, transform.rotation);
+        GameObject particle = Instantiate(_breakParticle, _particleSpawnPos);
         Destroy(particle, 1f);
         yield return new WaitForSeconds(_chestOpenDuration);
 

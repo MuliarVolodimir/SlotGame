@@ -28,8 +28,8 @@ public class SpaceShipGameController : MonoBehaviour
     [SerializeField] List<GameObject> _enemyPrefabs;
     [SerializeField] List<Transform> _enemySpawnPos;
 
-    //[Header("Audio")]
-    //[SerializeField] AudioClip _aplayClip;
+    [Header("Audio")]
+    [SerializeField] AudioClip _aplayClip;
 
     private ShipController _shipController;
     private int _score;
@@ -58,12 +58,14 @@ public class SpaceShipGameController : MonoBehaviour
 
     private void MainMenu()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         Time.timeScale = 0;
         _mainMenuScreen.SetActive(!_settingsScreen.activeSelf);
     }
 
     private void Settings()
     {
+        AudioManager.Instance.PlayOneShotSound(_aplayClip);
         _settingsScreen.SetActive(!_settingsScreen.activeSelf);
 
         switch (_settingsScreen.activeSelf)
@@ -84,11 +86,18 @@ public class SpaceShipGameController : MonoBehaviour
 
     private void _loadingScreen_OnLoad()
     {
-        MoveLeft();    
+        var tutorial = FindObjectOfType<TutorialSystem>();
+        tutorial.OnConfirm += Tutorial_OnConfirm;
+    }
+
+    private void Tutorial_OnConfirm()
+    {
+        MoveLeft();
         _shipController = _shipPrefab.GetComponent<ShipController>();
         _shipController.CanShoot = true;
         GameEnd = false;
         SpawnEnemy();
+        ApplicationData.Instance.SpaceShipFirstStart = false;
     }
 
     public void UpdateScore(int score)

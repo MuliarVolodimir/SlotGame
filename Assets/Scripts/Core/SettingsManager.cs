@@ -8,6 +8,9 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] Button _muteButton;
     [SerializeField] AudioClip _applayClip;
 
+    [SerializeField] Sprite _OnMuteSprite;
+    [SerializeField] Sprite _NonMuteSprite;
+
     private ApplicationData _appData;
 
     private void Start()
@@ -17,6 +20,7 @@ public class SettingsManager : MonoBehaviour
         _muteButton.onClick.AddListener(ToggleMute);
         _volumeSlider.onValueChanged.AddListener(SetVolume);
         _volumeSlider.value = _appData.GameVolume;
+        SwitchMuteSprite();
     }
 
     private void SetVolume(float volume)
@@ -31,7 +35,15 @@ public class SettingsManager : MonoBehaviour
     private void ToggleMute()
     {
         AudioManager.Instance.PlayOneShotSound(_applayClip);
+
         _appData.GameIsMute = !_appData.GameIsMute;
+
         AudioManager.Instance.Mute(_appData.GameIsMute);
+        SwitchMuteSprite();
+    }
+
+    private void SwitchMuteSprite()
+    {
+        _muteButton.GetComponent<Image>().sprite = _appData.GameIsMute == true ? _OnMuteSprite : _NonMuteSprite;
     }
 }

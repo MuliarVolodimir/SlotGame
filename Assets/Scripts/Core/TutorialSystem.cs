@@ -5,16 +5,7 @@ using UnityEngine.UI;
 public class TutorialSystem : MonoBehaviour
 { 
     [SerializeField] Button _confirmButton;
-    [SerializeField] Tutorials _tutorialType;
-
     public event Action OnConfirm;
-
-    private enum Tutorials
-    {
-        MainScene,
-        Chest,
-        SpaceShip
-    }
 
     void Start()
     {

@@ -28,6 +28,8 @@ public class ChestSystem : MonoBehaviour
     [SerializeField] List<AudioClip> _tapClips;
     [SerializeField] AudioClip _openChestClip;
 
+    [SerializeField] TutorialSystem _tutorialSystem;
+
     [SerializeField] Animator _chestAnimator;
     
     private int _currentTaps;
@@ -36,8 +38,15 @@ public class ChestSystem : MonoBehaviour
     {
         _coinsText.text = ApplicationData.Instance.GameResource[0].Count.ToString();
         _tapButton.onClick.AddListener(() => { TapChest(); });
-        FindObjectOfType<TutorialSystem>().OnConfirm += ChestSystem_OnConfirm;
-        
+
+        if (_tutorialSystem != null)
+        {
+            _tutorialSystem.OnConfirm += ChestSystem_OnConfirm;
+        }
+        else
+        {
+            ChestSystem_OnConfirm();
+        }
     }
 
     private void ChestSystem_OnConfirm()

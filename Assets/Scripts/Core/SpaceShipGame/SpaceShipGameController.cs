@@ -83,11 +83,18 @@ public class SpaceShipGameController : MonoBehaviour
     {
         SpawnEnemy();
     }
-
+    
     private void _loadingScreen_OnLoad()
     {
         var tutorial = FindObjectOfType<TutorialSystem>();
-        tutorial.OnConfirm += Tutorial_OnConfirm;
+        if (tutorial != null)
+        {
+            tutorial.OnConfirm += Tutorial_OnConfirm;
+        }
+        else
+        {
+            Tutorial_OnConfirm();
+        }
     }
 
     private void Tutorial_OnConfirm()

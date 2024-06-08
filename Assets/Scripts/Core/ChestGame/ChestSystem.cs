@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,12 +7,14 @@ using UnityEngine.UI;
 public class ChestSystem : MonoBehaviour
 {
     [SerializeField] int _tapsToOpen = 5;
+    [SerializeField] float _chestOpenDuration;
     [SerializeField] Button _tapButton;
 
     [SerializeField] Image _chestSlot;
     [SerializeField] Sprite _chestSprite;
     [SerializeField] List<Item> _possibleItems;
 
+    [SerializeField] GameObject _breakParticle;
     [SerializeField] GameObject _popupScreen;
 
     [SerializeField] TextMeshProUGUI _findText;
@@ -23,9 +26,10 @@ public class ChestSystem : MonoBehaviour
 
     [SerializeField] List<AudioClip> _tapClips;
     [SerializeField] AudioClip _openChestClip;
+
+    [SerializeField] Animator _chestAnimator;
     
     private int _currentTaps;
-    
 
     private void Start()
     {
@@ -46,20 +50,31 @@ public class ChestSystem : MonoBehaviour
         {
             var index = Random.Range(0, _tapClips.Count);
             AudioManager.Instance.PlayOneShotSound(_tapClips[index]);
+
+            _chestAnimator.ResetTrigger("Hit");
+            _chestAnimator.SetTrigger("Hit");
+
             _currentTaps++;
             UpdateTapCounterText();
 
             if (_currentTaps >= _tapsToOpen)
             {
-                _chestSlot.sprite = null;
-                OpenChest();
+                Color chestColor = _chestSlot.color;
+                chestColor.a = 0f;
+
+                _chestSlot.color = chestColor;
+                StartCoroutine(OpenChest());
             }
         }
     }
 
-    private void OpenChest()
+    private IEnumerator OpenChest()
     {
         AudioManager.Instance.PlayOneShotSound(_openChestClip);
+
+        GameObject particle = Instantiate(_breakParticle, transform.position, transform.rotation);
+        Destroy(particle, 1f);
+        yield return new WaitForSeconds(_chestOpenDuration);
 
         var isFind = false;
         isFind = Random.Range(0, 2) == 1 ? true : false;
@@ -72,6 +87,10 @@ public class ChestSystem : MonoBehaviour
 
             _findText.text = $"FIND ITEM";
             _priceText.text = $"+{item.Price}";
+
+            Color color = _itemImage.color;
+            color.a = 1f;
+            _itemImage.color = color;
             _itemImage.sprite = item.Sprite;
             _popupScreen.GetComponent<PopupScreen>().OnConfirm += SpawnChest;
         }
@@ -79,7 +98,9 @@ public class ChestSystem : MonoBehaviour
         {
             _findText.text = $"EMPTY";
             _priceText.text = $" ";
-            _itemImage.sprite = null;
+            Color color = _itemImage.color;
+            color.a = 0f;
+            _itemImage.color = color;
             _popupScreen.GetComponent<PopupScreen>().OnConfirm += SpawnChest;
         }
     }
@@ -88,6 +109,11 @@ public class ChestSystem : MonoBehaviour
     {
         _coinsText.text = ApplicationData.Instance.GameResource[0].Count.ToString();
         _currentTaps = 0;
+
+        Color chestColor = _chestSlot.color;
+        chestColor.a = 1f;
+
+        _chestSlot.color = chestColor;
         _chestSlot.sprite = _chestSprite;
         _popupScreen.GetComponent<PopupScreen>().OnConfirm -= SpawnChest;  
         

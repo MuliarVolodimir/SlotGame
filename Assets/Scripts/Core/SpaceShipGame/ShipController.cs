@@ -9,21 +9,30 @@ public class ShipController : MonoBehaviour
 
     [SerializeField] AudioClip _shipShootClip;
     [SerializeField] AudioClip _explosionClip;
+    [SerializeField] GameObject _explosionParticle;
 
     public bool CanShoot = false;
-
     private float _nextFire;
-    
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        
         Die();
     }
 
-    private void Die()
+    public void Die()
     {
         AudioManager.Instance.PlayOneShotSound(_explosionClip);
-        FindObjectOfType<SpaceShipGameController>().SpaceShipGameController_OnDie();
+        
+        GameObject explosion = Instantiate(_explosionParticle, transform.position, transform.rotation);
+        Destroy(explosion, 1f);
+
+        var controller = FindObjectOfType<SpaceShipGameController>();
+
+        if (!controller.GameEnd)
+        {
+            controller.SpaceShipGameController_OnDie();
+        }
         gameObject.SetActive(false);
     }
 

@@ -13,11 +13,13 @@ public class SlotSystem : MonoBehaviour
     [SerializeField] List<Item> _slotItems;
     [SerializeField] List<Image> _slotImages;
     [SerializeField] TextMeshProUGUI _coinsText;
+    [SerializeField] TextMeshProUGUI _rewardText;
 
     [SerializeField] PopupScreen _popupScreen;
     [SerializeField] AudioClip _notMoneyClip;
     [SerializeField] AudioClip _spinClip;
     [SerializeField] AudioClip _winClip;
+    [SerializeField] AudioClip _loseClip;
 
     private float _spinDuration;
     private List<int> _currentSlotValues;
@@ -26,6 +28,7 @@ public class SlotSystem : MonoBehaviour
     private void Start()
     {
         InitializeSlots();
+        _rewardText.gameObject.SetActive(false);
     }
 
     private void InitializeSlots()
@@ -48,7 +51,10 @@ public class SlotSystem : MonoBehaviour
 
     private IEnumerator SpinCoroutine()
     {
+        _rewardText.gameObject.SetActive(false);
+
         var coins = ApplicationData.Instance.GameResource[0].Count;
+
         _spinDuration = _spinClip.length;
         if (coins >= _spinPrice)
         {
@@ -75,8 +81,8 @@ public class SlotSystem : MonoBehaviour
                 yield return new WaitForSeconds(interval);
             }
 
-            _isSpinning = false;
-            CheckWinCondition();
+            
+            StartCoroutine(CheckWinCondition());
         }
         else
         {
@@ -85,7 +91,7 @@ public class SlotSystem : MonoBehaviour
         }
     }
 
-    private void CheckWinCondition()
+    private IEnumerator CheckWinCondition()
     {
         bool isWin = true;
 
@@ -97,21 +103,29 @@ public class SlotSystem : MonoBehaviour
                 break;
             }
         }
+        
+        _rewardText.gameObject.SetActive(true);
 
         if (isWin)
         {
             AudioManager.Instance.PlayOneShotSound(_winClip);
+            
+            _rewardText.text = $"WIN!!!";
+            yield return new WaitForSeconds(_winClip.length);
 
-            _popupScreen.ShowMessage($"WIN!\n {_reward}");
+            _popupScreen.ShowMessage($"WIN!\n +{_reward}");
             ApplicationData.Instance.GameResource[0].Count += _reward;
             var coins = ApplicationData.Instance.GameResource[0].Count;
             _coinsText.text = coins.ToString();
-            Debug.Log("WIN!!!");
         }
         else
         {
+            AudioManager.Instance.PlayOneShotSound(_loseClip);
+            _rewardText.text = $"TRY AGAIN";
+            yield return new WaitForSeconds(1f);
+
             _popupScreen.ShowMessage("TRY AGAIN!");
-            Debug.Log("LOSE!!!!");
         }
+        _isSpinning = false;
     }
 }

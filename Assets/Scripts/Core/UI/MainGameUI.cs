@@ -58,14 +58,16 @@ public class MainGameUI : MonoBehaviour
         _settingsButton.onClick.AddListener(ToggleSettings);
         _backButton.onClick.AddListener(CloseActiveWindow);
 
-        _coinsCount.GetComponentInChildren<TextMeshProUGUI>().text = ApplicationData.Instance.GameResource[0].Count.ToString();
+        _backButton.gameObject.SetActive(false);
 
+        _coinsCount.GetComponentInChildren<TextMeshProUGUI>().text = ApplicationData.Instance.GameResource[0].Count.ToString();
         
     }
 
     private void Shop()
     {
         AudioManager.Instance.PlayOneShotSound(_playButtonClip);
+        _backButton.gameObject.SetActive(true);
         SwitchActive(_shopScreen);
     }
 
@@ -73,7 +75,6 @@ public class MainGameUI : MonoBehaviour
     {
         ApplicationData.Instance.MainFirstStart = false;
         _coinsCount.gameObject.SetActive(true);
-        _backButton.gameObject.SetActive(true);
 
         AudioManager.Instance.PlayOneShotSound(_playButtonClip);
         AudioManager.Instance.SetBackGroundMusic(_backgroundClip);
@@ -83,6 +84,7 @@ public class MainGameUI : MonoBehaviour
     private void CloseActiveWindow()
     {
         AudioManager.Instance.PlayOneShotSound(_cancelButtonClip);
+        _backButton.gameObject.SetActive(false);
 
         if (_activeScreens[_screenIndex] != _mainScreen)
         {
@@ -102,6 +104,7 @@ public class MainGameUI : MonoBehaviour
     private void ChooseGame()
     {
         AudioManager.Instance.PlayOneShotSound(_playButtonClip);
+        _backButton.gameObject.SetActive(true);
         SwitchActive(_chooseGameScreen);
     }
 

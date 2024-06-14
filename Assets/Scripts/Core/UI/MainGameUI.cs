@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System;
 
 public class MainGameUI : MonoBehaviour
 {
@@ -12,11 +13,14 @@ public class MainGameUI : MonoBehaviour
 
     [SerializeField] Button _backButton;
 
+    [SerializeField] List<Button> _purchaseCoinsButton;
+
     [SerializeField] GameObject _menuScreen;
     [SerializeField] GameObject _mainScreen;
     [SerializeField] GameObject _shopScreen;
     [SerializeField] GameObject _chooseGameScreen;
     [SerializeField] GameObject _settingsScreen;
+    [SerializeField] GameObject _purchaseScreen;
 
     [SerializeField] GameObject _coinsCount;
 
@@ -29,12 +33,16 @@ public class MainGameUI : MonoBehaviour
 
     private void Start()
     {
-
-        _activeScreens = new List<GameObject> { _menuScreen, _mainScreen, _shopScreen, _chooseGameScreen, _settingsScreen };
+        _activeScreens = new List<GameObject> { _menuScreen, _mainScreen, _shopScreen, _chooseGameScreen, _settingsScreen, _purchaseScreen };
 
         foreach (var screen in _activeScreens)
         {
             screen.SetActive(false);
+        }
+
+        foreach (var button in _purchaseCoinsButton)
+        {
+            button.onClick.AddListener(PurchaseScreen);
         }
 
         if (ApplicationData.Instance.MainFirstStart)
@@ -61,7 +69,12 @@ public class MainGameUI : MonoBehaviour
         _backButton.gameObject.SetActive(false);
 
         _coinsCount.GetComponentInChildren<TextMeshProUGUI>().text = ApplicationData.Instance.GameResource[0].Count.ToString();
-        
+    }
+
+    private void PurchaseScreen()
+    {
+        AudioManager.Instance.PlayOneShotSound(_playButtonClip);
+        _purchaseScreen.SetActive(!_purchaseScreen.activeSelf);
     }
 
     private void Shop()

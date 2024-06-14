@@ -754,7 +754,7 @@ PlayerSettings:
     Build: 0
     Collab: 0
     Game Performance: 0
-    Purchasing: 1
+    Purchasing: 0
     UDP: 0
     Unity Ads: 0
   luminIcon:
@@ -770,11 +770,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: b5efcf69-546e-473d-9f42-4f89dc1c7465
+  cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: SlotGame (1)
-  organizationId: volodyamuliar
+  projectName: 
+  organizationId: 
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
